@@ -1,0 +1,12 @@
+AllCops:
+  NewCops: enable
+
+Style/Documentation:
+  Enabled: false
+
+Style/EndOfLine:
+  EnforcedStyle: lf
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
