@@ -1,5 +1,5 @@
 # Child_Age
-Child_Ageは、誕生日と指定日に基づいて年齢を計算するメソッドを提供します。
+Child_Ageは、誕生日と指定日から年齢を計算するメソッドを提供します。
 
 与えられた誕生日と指定日に基づいて、以下の形式で年齢を表示します。
 - 1歳未満の場合：「生後 ○ヶ月」
@@ -12,11 +12,11 @@ Child_Ageは、誕生日と指定日に基づいて年齢を計算するメソ�
 ## 使い方
 1. リポジトリをクローンします。
 ```bash
-git clone https://github.com/kei-kmj/Child-Age.git
+git clone https://github.com/kei-kmj/Child_Age.git
 ```
 2. ダウンロードしたプログラムのディレクトリに移動します。
 ```bash
-cd Child-Age
+cd Child_Age
 ```
 3. 誕生日と指定日を受け取って、年齢を表示するメソッドを呼び出します。
 ```ruby
@@ -29,11 +29,15 @@ cd Child-Age
 
 
 ## 年齢の定義について
-民法付属法の[年齢計算に関する法律](https://elaws.e-gov.go.jp/search/elawsSearch/elaws_search/lsg0500/detail?lawId=135AC0000000050) に基づいて、年齢を計算します。
+民法付属法の[年齢計算に関する法律](https://elaws.e-gov.go.jp/search/elawsSearch/elaws_search/lsg0500/detail?lawId=135AC0000000050) に基づいて年齢を計算し、月齢の計算にも同じ定義を援用して計算します。
 
-例 :
+年齢の例 :
 - 1月1日生まれの場合、翌年の12月31日の午後12時に年齢が1つ上がる。
 - 2月29日生まれの場合、翌年の2月28日の午後12時に年齢が1つ上がる。
+
+月齢の例 :
+- 1月1日生まれの場合、1月31日の午後12時に月齢が1つ上がる。
+- 5月31日生まれの場合、6月30日の午後12時に月齢が1つ上がる。
 
 ## ライセンス
 MIT License

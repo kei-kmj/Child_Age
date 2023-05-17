@@ -11,6 +11,7 @@ describe 'child_age' do
         end.to output("生後 0ヶ月\n").to_stdout
       end
     end
+
     context '指定日が、1年後の誕生日の前日' do
       it '生後 11ヶ月と表示される' do
         expect do
@@ -80,6 +81,7 @@ describe 'child_age' do
         end.to output("1歳 0ヶ月\n").to_stdout
       end
     end
+
     context '翌々年2月28日生まれ' do
       it '1歳 11ヶ月と表示される' do
         expect do
@@ -96,9 +98,10 @@ describe 'child_age' do
       end
     end
   end
+
   context '入力値が不正のとき' do
     context '誕生日が0のとき' do
-      it '日付が不正ですと表示される' do
+      it '誕生日が不正ですと表示される' do
         expect do
           child_age(0, 20230101)
         end.to output("誕生日が不正です\n").to_stdout
@@ -106,7 +109,7 @@ describe 'child_age' do
     end
 
     context '指定日が0のとき' do
-      it '日付が不正ですと表示される' do
+      it '指定日が不正ですと表示される' do
         expect do
           child_age(20230101, 0)
         end.to output("指定日が不正です\n").to_stdout
