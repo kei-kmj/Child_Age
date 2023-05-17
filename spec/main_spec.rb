@@ -2,11 +2,11 @@
 
 require_relative '../main'
 
-describe 'valid_dates?' do
+describe 'correct_order?' do
   context '誕生日が文字列又は空文字のとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(0, 20230101)
+        correct_order?(0, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -14,7 +14,7 @@ describe 'valid_dates?' do
   context '指定日が文字列又は空文字のとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20230101, 0)
+        correct_order?(20230101, 0)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -22,7 +22,7 @@ describe 'valid_dates?' do
   context '誕生月に0が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220001, 20230101)
+        correct_order?(20220001, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -30,7 +30,7 @@ describe 'valid_dates?' do
   context '指定月に0が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20230001)
+        correct_order?(20220101, 20230001)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -38,7 +38,7 @@ describe 'valid_dates?' do
   context '誕生月に13が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20221301, 20230101)
+        correct_order?(20221301, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -46,7 +46,7 @@ describe 'valid_dates?' do
   context '指定月に13が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20231301)
+        correct_order?(20220101, 20231301)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -54,7 +54,7 @@ describe 'valid_dates?' do
   context '誕生日に0が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220100, 20230101)
+        correct_order?(20220100, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -62,7 +62,7 @@ describe 'valid_dates?' do
   context '指定日に0が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20230100)
+        correct_order?(20220101, 20230100)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -70,7 +70,7 @@ describe 'valid_dates?' do
   context '誕生日に32が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220132, 20230101)
+        correct_order?(20220132, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -78,7 +78,7 @@ describe 'valid_dates?' do
   context '指定日に32が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20230132)
+        correct_order?(20220101, 20230132)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -86,7 +86,7 @@ describe 'valid_dates?' do
   context '誕生日に存在しない日時が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220431, 20230101)
+        correct_order?(20220431, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -94,7 +94,7 @@ describe 'valid_dates?' do
   context '指定日に存在しない日時が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20220431)
+        correct_order?(20220101, 20220431)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -102,7 +102,7 @@ describe 'valid_dates?' do
   context '誕生日に、存在しないうるう日が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220229, 20230101)
+        correct_order?(20220229, 20230101)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -110,7 +110,7 @@ describe 'valid_dates?' do
   context '指定日に、存在しないうるう日が入力されたとき' do
     it '日付が不正ですと表示される' do
       expect do
-        valid_dates?(20220101, 20220229)
+        correct_order?(20220101, 20220229)
       end.to output("日付が不正です\n").to_stdout
     end
   end
@@ -118,7 +118,7 @@ describe 'valid_dates?' do
   context '誕生日が、指定日より未来のとき' do
     it '指定日は誕生日より後にしてくださいと表示される' do
       expect do
-        valid_dates?(20230101, 20220101)
+        correct_order?(20230101, 20220101)
       end.to output("指定日は誕生日より後にしてください\n").to_stdout
     end
   end
