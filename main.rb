@@ -4,7 +4,7 @@ JANUARY = 1
 DECEMBER = 12
 FIRST_DAY = 1
 LAST_DAY = 31
-ONE_YEAR = 12
+MONTHS_PER_YEAR = 12
 YEARLY_COUNT = 10000
 MONTHLY_COUNT = 100
 
@@ -32,7 +32,8 @@ MONTHLY_COUNT = 100
 # ((20200328 % 10000) - (20200228 % 10000)) / 100 = 1(ヶ月) となる。
 
 def child_age(birthday, specified_date)
-  return unless correct_order?(birthday, specified_date)
+  error = valid_order(birthday, specified_date)
+  return puts error if error
 
   age = calc_age(birthday, specified_date)
   moon_age = calc_moon_age(birthday, specified_date)
@@ -40,20 +41,15 @@ def child_age(birthday, specified_date)
   print_child_age(age, moon_age)
 end
 
-def correct_order?(birthday, specified_date)
-  if !valid?(birthday) || !valid?(specified_date)
-    print_error_message('日付が不正です')
-    false
-  elsif birthday > specified_date
-    print_error_message('指定日は誕生日以後にしてください')
-    false
-  else
-    true
-  end
+def valid_order(birthday, specified_date)
+  return '誕生日が不正です' unless valid?(birthday)
+  return '指定日が不正です' unless valid?(specified_date)
+  return '指定日は誕生日以後にしてください' if birthday > specified_date
+
+  false
 end
 
 def valid?(date)
-  # 文字列や空文字など不正な値が入力された場合
   return false if date.zero?
 
   year = date / YEARLY_COUNT
@@ -68,17 +64,13 @@ def valid?(date)
     "#{year.to_s.rjust(4, '0')}-#{month.to_s.rjust(2, '0')}-#{day.to_s.rjust(2, '0')}"
 end
 
-def print_error_message(message)
-  puts message
-end
-
 def calc_age(birthday, specified_date)
   (specified_date - birthday) / YEARLY_COUNT
 end
 
 def calc_moon_age(birthday, specified_date)
   moon_age = ((specified_date % YEARLY_COUNT) - (birthday % YEARLY_COUNT)) / MONTHLY_COUNT
-  moon_age += ONE_YEAR if moon_age.negative?
+  moon_age += MONTHS_PER_YEAR if moon_age.negative?
   moon_age
 end
 
@@ -94,6 +86,6 @@ end
 
 # エントリポイント
 # 西暦でYYYYMMDD形式で誕生日と指定日を入力する
-birthday = gets.to_i
-specified_date = gets.to_i
+birthday = 20220101
+specified_date = 20230101
 child_age(birthday, specified_date)
