@@ -10,3 +10,6 @@ Style/EndOfLine:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Style/NumericLiterals:
+    Enabled: false
