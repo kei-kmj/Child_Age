@@ -2,52 +2,220 @@
 
 require_relative '../main'
 
+describe 'valid_dates?' do
+  context '誕生日が文字列又は空文字のとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(0, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定日が文字列又は空文字のとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20230101, 0)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生月に0が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220001, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定月に0が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20230001)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生月に13が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20221301, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定月に13が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20231301)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生日に0が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220100, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定日に0が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20230100)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生日に32が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220132, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定日に32が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20230132)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生日に存在しない日時が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220431, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定日に存在しない日時が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20220431)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生日に、存在しないうるう日が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220229, 20230101)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '指定日に、存在しないうるう日が入力されたとき' do
+    it '日付が不正ですと表示される' do
+      expect do
+        valid_dates?(20220101, 20220229)
+      end.to output("日付が不正です\n").to_stdout
+    end
+  end
+
+  context '誕生日が、指定日より未来のとき' do
+    it '指定日は誕生日より後にしてくださいと表示される' do
+      expect do
+        valid_dates?(20230101, 20220101)
+      end.to output("指定日は誕生日より後にしてください\n").to_stdout
+    end
+  end
+end
+
 describe 'child_age' do
-  context '1歳未満の確認' do
-    it '誕生日=指定日のときは生後 0ヶ月と表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_230_101])
-      expect(child_age).to eq '生後 0ヶ月'
+  context '1歳未満のとき' do
+    context '指定日=誕生日' do
+      it '生後 0ヶ月と表示される' do
+        expect do
+          child_age(20220101, 20220101)
+        end.to output("生後 0ヶ月\n").to_stdout
+      end
     end
-
-    it '1年後の前日は生後 11ヶ月と表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_231_201])
-      expect(child_age).to eq '生後 11ヶ月'
-    end
-  end
-
-  context '2歳未満の確認' do
-    it '1歳を越えると年齢と月齢が表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_240_101])
-      expect(child_age).to eq '1歳 0ヶ月'
-    end
-
-    it '2歳未満は年齢と月齢が表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_241_231])
-      expect(child_age).to eq '1歳 11ヶ月'
+    context '指定日が、1年後の誕生日の前日' do
+      it '生後 11ヶ月と表示される' do
+        expect do
+          child_age(20230101, 20231201)
+        end.to output("生後 11ヶ月\n").to_stdout
+      end
     end
   end
 
-  context '2歳以上の確認' do
-    it '2歳になると年齢が表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_250_101])
-      expect(child_age).to eq '2歳'
+  context '1歳以上2歳未満のとき' do
+    context '1歳' do
+      it '年齢と月齢が表示される' do
+        expect do
+          child_age(20230101, 20240101)
+        end.to output("1歳 0ヶ月\n").to_stdout
+      end
     end
 
-    it '2歳以上の時は年齢が表示される' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_230_101, 20_410_101])
-      expect(child_age).to eq '18歳'
+    context '指定日が、2年後の誕生日の前日' do
+      it '年齢と月齢が表示される' do
+        expect do
+          child_age(20230101, 20241231)
+        end.to output("1歳 11ヶ月\n").to_stdout
+      end
     end
   end
 
-  context '2月29日生まれ（うるう日）の確認' do
-    it '翌年2月28日は生後11ヶ月' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_200_229, 20_210_228])
-      expect(child_age).to eq '生後 11ヶ月'
+  context '2歳以上のとき' do
+    context '2歳' do
+      it '年齢が表示される' do
+        expect do
+          child_age(20230101, 20250101)
+        end.to output("2歳\n").to_stdout
+      end
     end
 
-    it '翌年3月1日に1歳になる' do
-      allow_any_instance_of(Object).to receive(:receive_date).and_return([20_200_229, 20_210_301])
-      expect(child_age).to eq '1歳 0ヶ月'
+    context '2歳超' do
+      it '年齢が表示される' do
+        expect do
+          child_age(20230101, 20410101)
+        end.to output("18歳\n").to_stdout
+      end
+    end
+  end
+
+  context '2月29日（うるう日）生まれのとき' do
+    context '指定日=誕生日' do
+      it '生後 0ヶ月' do
+        expect do
+          child_age(20200229, 20200229)
+        end.to output("生後 0ヶ月\n").to_stdout
+      end
+    end
+
+    context '翌年2月28日' do
+      it '生後 11ヶ月' do
+        expect do
+          child_age(20200229, 20210228)
+        end.to output("生後 11ヶ月\n").to_stdout
+      end
+    end
+
+    context '翌年3月1日' do
+      it '1歳 0ヶ月' do
+        expect do
+          child_age(20200229, 20210301)
+        end.to output("1歳 0ヶ月\n").to_stdout
+      end
+    end
+    context '翌々年2月28日' do
+      it '1歳 11ヶ月' do
+        expect do
+          child_age(20200229, 20220228)
+        end.to output("1歳 11ヶ月\n").to_stdout
+      end
+    end
+
+    context '翌々年3月1日' do
+      it '2歳' do
+        expect do
+          child_age(20200229, 20220301)
+        end.to output("2歳\n").to_stdout
+      end
     end
   end
 end
