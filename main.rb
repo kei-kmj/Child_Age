@@ -17,7 +17,7 @@ MONTHLY_COUNT = 100
 # 誕生日が20230115で指定日が20240115の場合、
 # (20240115 - 20230115) / 10000 = 1(歳) となる。
 
-# 月齢に関しても同じ考え方で、誕生日と指定日を10000で割った余りを100で割ることで、
+# 月齢に関しても同じ考え方で、誕生日と指定日を10000で割った余りの差分を100で割ることで、
 # 月齢を計算することができる。
 
 # 例えば、誕生日が20230215で指定日が20230314の場合、
@@ -25,7 +25,7 @@ MONTHLY_COUNT = 100
 # 誕生日が20230215で指定日が20230315の場合、
 # ((20230315 % 10000) - (20230215 % 10000)) / 100 = 1(ヶ月) となる。
 
-# これはうるう日を挟んでも計算が可能で、
+# うるう日を挟んでも計算が可能で、
 # 誕生日が20200228で指定日が20200327の場合、
 # ((20200327 % 10000) - (20200228 % 10000)) / 100 = 0.99 ≒ 0(ヶ月) となり、
 # 誕生日が20200228で指定日が20200328の場合、
@@ -45,15 +45,11 @@ def correct_order?(birthday, specified_date)
     print_error_message('日付が不正です')
     false
   elsif birthday > specified_date
-    print_error_message('指定日は誕生日より後にしてください')
+    print_error_message('指定日は誕生日以後にしてください')
     false
   else
     true
   end
-end
-
-def print_error_message(message)
-  puts message
 end
 
 def valid?(date)
@@ -67,9 +63,13 @@ def valid?(date)
   # 月又は日が不正な値の場合
   return false if month < JANUARY || month > DECEMBER || day < FIRST_DAY || day > LAST_DAY
 
-  # 不正な年月日の場合
+  # 不正な年月日でないかチェックする
   Time.new(year, month, day).strftime('%F') == \
     "#{year.to_s.rjust(4, '0')}-#{month.to_s.rjust(2, '0')}-#{day.to_s.rjust(2, '0')}"
+end
+
+def print_error_message(message)
+  puts message
 end
 
 def calc_age(birthday, specified_date)
