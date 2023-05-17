@@ -8,10 +8,31 @@ ONE_YEAR = 12
 YEARLY_COUNT = 10000
 MONTHLY_COUNT = 100
 
+# 年齢計算ロジックについて
+# 誕生日と指定日を整数値(YYYYMMDD形式)で受け取り、差分を10000で割ることで、
+# うるう年や月末日の計算を考慮せずに満年齢を計算することができる
 
-#
+# 例えば、誕生日が20230115で指定日が20240114の場合、
+# (20240114 - 20230115) / 10000 = 0.9999 ≒ 0(歳) となり、
+# 誕生日が20230115で指定日が20240115の場合、
+# (20240115 - 20230115) / 10000 = 1(歳) となる。
+
+# 月齢に関しても同じ考え方で、誕生日と指定日を10000で割った余りを100で割ることで、
+# 月齢を計算することができる。
+
+# 例えば、誕生日が20230215で指定日が20230314の場合、
+# ((20230314 % 10000) - (20230215 % 10000)) / 100 = 0.99 ≒ 0(ヶ月) となり、
+# 誕生日が20230215で指定日が20230315の場合、
+# ((20230315 % 10000) - (20230215 % 10000)) / 100 = 1(ヶ月) となる。
+
+# これはうるう日を挟んでも計算が可能で、
+# 誕生日が20200228で指定日が20200327の場合、
+# ((20200327 % 10000) - (20200228 % 10000)) / 100 = 0.99 ≒ 0(ヶ月) となり、
+# 誕生日が20200228で指定日が20200328の場合、
+# ((20200328 % 10000) - (20200228 % 10000)) / 100 = 1(ヶ月) となる。
+
 def child_age(birthday, specified_date)
-  return unless valid_dates?(birthday, specified_date)
+  return unless correct_order?(birthday, specified_date)
 
   age = calc_age(birthday, specified_date)
   moon_age = calc_moon_age(birthday, specified_date)
@@ -19,16 +40,20 @@ def child_age(birthday, specified_date)
   print_child_age(age, moon_age)
 end
 
-def valid_dates?(birthday, specified_date)
+def correct_order?(birthday, specified_date)
   if !valid?(birthday) || !valid?(specified_date)
-    puts '日付が不正です'
+    print_error_message('日付が不正です')
     false
   elsif birthday > specified_date
-    puts '指定日は誕生日より後にしてください'
+    print_error_message('指定日は誕生日より後にしてください')
     false
   else
     true
   end
+end
+
+def print_error_message(message)
+  puts message
 end
 
 def valid?(date)
@@ -68,7 +93,7 @@ def print_child_age(age, moon_age)
 end
 
 # エントリポイント
-# 西暦でYYYYDDMM形式で誕生日と指定日を入力する
+# 西暦でYYYYMMDD形式で誕生日と指定日を入力する
 birthday = gets.to_i
 specified_date = gets.to_i
 child_age(birthday, specified_date)
