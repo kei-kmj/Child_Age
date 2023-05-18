@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-JANUARY = 1
-DECEMBER = 12
-FIRST_DAY = 1
-LAST_DAY = 31
+require 'date'
+
 MONTHS_PER_YEAR = 12
 YEARLY_COUNT = 10000
 MONTHLY_COUNT = 100
@@ -56,12 +54,12 @@ def valid?(date)
   month = date % YEARLY_COUNT / MONTHLY_COUNT
   day = date % MONTHLY_COUNT
 
-  # 月又は日が不正な値の場合
-  return false if month < JANUARY || month > DECEMBER || day < FIRST_DAY || day > LAST_DAY
-
   # 不正な年月日でないかチェックする
-  Time.new(year, month, day).strftime('%F') == \
-    "#{year.to_s.rjust(4, '0')}-#{month.to_s.rjust(2, '0')}-#{day.to_s.rjust(2, '0')}"
+  begin
+    Date.new(year, month, day)
+  rescue Date::Error
+    false
+  end
 end
 
 def calc_age(birthday, specified_date)

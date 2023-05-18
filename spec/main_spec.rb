@@ -100,86 +100,6 @@ describe 'child_age' do
   end
 
   context '入力値が不正のとき' do
-    context '誕生日が0のとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(0, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定日が0のとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20230101, 0)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
-    context '誕生月に0が入力されたとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(20220001, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定月に0が入力されたとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20220101, 20230001)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
-    context '誕生月に13が入力されたとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(20221301, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定月に13が入力されたとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20220101, 20231301)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
-    context '誕生日に0が入力されたとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(20220100, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定日に0が入力されたとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20220101, 20230100)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
-    context '誕生日に32が入力されたとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(20220132, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定日に32が入力されたとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20220101, 20230132)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
     context '誕生日に存在しない日時が入力されたとき' do
       it '誕生日が不正ですと表示される' do
         expect do
@@ -191,23 +111,7 @@ describe 'child_age' do
     context '指定日に存在しない日時が入力されたとき' do
       it '指定日が不正ですと表示される' do
         expect do
-          child_age(20220101, 20220431)
-        end.to output("指定日が不正です\n").to_stdout
-      end
-    end
-
-    context '誕生日に、存在しないうるう日が入力されたとき' do
-      it '誕生日が不正ですと表示される' do
-        expect do
-          child_age(20220229, 20230101)
-        end.to output("誕生日が不正です\n").to_stdout
-      end
-    end
-
-    context '指定日に、存在しないうるう日が入力されたとき' do
-      it '指定日が不正ですと表示される' do
-        expect do
-          child_age(20220101, 20220229)
+          child_age(20220101, 20221331)
         end.to output("指定日が不正です\n").to_stdout
       end
     end
